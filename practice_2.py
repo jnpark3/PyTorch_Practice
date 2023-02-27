@@ -6,7 +6,6 @@ from torch_geometric.nn import GCNConv
 import torch.nn.functional as F
 import torch
 
-
 """
 1. Sample dataset enzymes
 """
@@ -91,7 +90,7 @@ class GCN(torch.nn.Module):
 
         x = self.conv1(x, edge_index)
         x = F.relu(x)   
-
+        
         weights, biases = list(self.conv2.parameters())     
         x = self.conv2(x, edge_index)
         x = F.relu(x)
@@ -99,16 +98,6 @@ class GCN(torch.nn.Module):
 
         return F.log_softmax(x, dim=1)
 
-    def train_round(self, data):
-        x, edge_index = data.x, data.edge_index
-
-        x = self.conv1(x, edge_index)
-        x = F.relu(x)        
-        x = self.conv2(x, edge_index)
-        x = F.relu(x)
-        x = self.conv3(x, edge_index)
-
-        return F.log_softmax(x, dim=1)
 
 device = torch.device('cpu')
 model = GCN().to(device)
